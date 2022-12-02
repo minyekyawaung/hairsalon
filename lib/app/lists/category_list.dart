@@ -59,15 +59,16 @@ class CategoryList extends StatelessWidget {
                             },
                             child: Row(
                               children: [
-                                getCircularImage(context, 108.h, double.infinity,
-                                    20.h, "haircut.png",
+                                getCircularImageApi(context, 108.h,
+                                    double.infinity, 20.h, "haircut.png",
                                     boxFit: BoxFit.cover),
                                 12.w.horizontalSpace,
                                 Expanded(
                                   flex: 1,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [

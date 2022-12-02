@@ -55,6 +55,8 @@ dependencies:
   share_plus: ^4.0.10
   date_time_picker: ^2.1.0
   image_picker: ^0.8.5+3
+  image_network: ^2.5.1
+  cached_network_image: ^3.2.1
 
 
 

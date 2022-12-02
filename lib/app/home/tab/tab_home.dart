@@ -11,15 +11,14 @@ import 'package:hairsalon/base/widget_utils.dart';
 
 import '../../../base/color_data.dart';
 import '../../../base/data_file.dart';
+import '../../model/Taxonomy.dart';
 import '../../model/model_banner.dart';
 import '../../model/model_category.dart';
 
 class TabHome extends StatelessWidget {
   final List<ModelCategory> categoryList = DataFile.getAllCategoryList();
-  final List<String> salonList = [
-    "https://pos.crystalshine.net/img/default.png",
-    "salon2.png"
-  ];
+  // final List<String> salonList = ["salon3.png", "salon4.png"];
+  late Future<List<Data>> salonList = DataFile.callTaxonomy();
   final List<String> nearestSalonList = ["salon3.png", "salon4.png"];
   final List<ModelBanner> bannerList = DataFile.getAllBannerList();
 
@@ -260,86 +259,193 @@ class TabHome extends StatelessWidget {
                   }),
                   SizedBox(
                     height: 261.w,
-                    child: ListView.builder(
-                      itemCount: salonList.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            Constant.sendToNext(
-                                context, salonDetailScreenRoute);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10.w),
-                            margin: EdgeInsets.only(
-                                left: (index == 0) ? horSpace : 6.w,
-                                right: (index == salonList.length - 1)
-                                    ? horSpace
-                                    : 6.w,
-                                top: 20.w,
-                                bottom: 20.w),
-                            width: 278.w,
-                            decoration: getButtonDecoration(
-                                getCardColor(context),
-                                withCorners: true,
-                                corner: 20.w,
-                                shadow: [
-                                  const BoxShadow(
-                                      color: Color.fromRGBO(
-                                          0, 0, 0, 0.07999999821186066),
-                                      offset: Offset(-4, 5),
-                                      blurRadius: 16)
-                                ]),
-                            height: double.infinity,
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Stack(
+                    child: FutureBuilder<List<Data>>(
+                      future: salonList,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          // return Text(snapshot.data!.data.length.toString());
+                          // return Text(snapshot.data!.length.toString());
+                          // List<Taxonomy> items =
+                          //     snapshot.data as List<Taxonomy>;
+                          return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            //itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Constant.sendToNext(
+                                      context, salonDetailScreenRoute);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10.w),
+                                  margin: EdgeInsets.only(
+                                      left: (index == 0) ? horSpace : 6.w,
+                                      right:
+                                          (index == snapshot.data!.length - 1)
+                                              ? horSpace
+                                              : 6.w,
+                                      top: 20.w,
+                                      bottom: 20.w),
+                                  width: 278.w,
+                                  decoration: getButtonDecoration(
+                                      getCardColor(context),
+                                      withCorners: true,
+                                      corner: 20.w,
+                                      shadow: [
+                                        const BoxShadow(
+                                            color: Color.fromRGBO(
+                                                0, 0, 0, 0.07999999821186066),
+                                            offset: Offset(-4, 5),
+                                            blurRadius: 16)
+                                      ]),
+                                  height: double.infinity,
+                                  child: Column(
                                     children: [
-                                      getCircularImage(
+                                      Expanded(
+                                        flex: 1,
+                                        child: Stack(
+                                          children: [
+                                            getCircularImageApi(
+                                                context,
+                                                double.infinity,
+                                                double.infinity,
+                                                20.w,
+                                                snapshot
+                                                    .data![index].description
+                                                    .toString(),
+                                                // "https://pos.crystalshine.net/uploads/img/1669874698_1.png",
+                                                boxFit: BoxFit.cover),
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: buildFavouriteBtn(
+                                                  EdgeInsets.all(10.w)),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      10.w.verticalSpace,
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: getCustomFont(
+                                                // "Royalty  barbershop",
+                                                snapshot.data![index].name
+                                                    .toString(),
+                                                16,
+                                                getFontColor(context),
+                                                1,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          buildStarView(context, "4.9"),
+                                        ],
+                                      ),
+                                      10.w.verticalSpace,
+                                      buildLocationRow(
                                           context,
-                                          double.infinity,
-                                          double.infinity,
-                                          20.w,
-                                          salonList[index],
-                                          boxFit: BoxFit.cover),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: buildFavouriteBtn(
-                                            EdgeInsets.all(10.w)),
-                                      )
+                                          "8502 Preston Rd. Inglewood, Maine",
+                                          getFontGreyColor(context)),
                                     ],
                                   ),
                                 ),
-                                10.w.verticalSpace,
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: getCustomFont(
-                                          "Royalty  barbershop",
-                                          16,
-                                          getFontColor(context),
-                                          1,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    buildStarView(context, "4.9"),
-                                  ],
-                                ),
-                                10.w.verticalSpace,
-                                buildLocationRow(
-                                    context,
-                                    "8502 Preston Rd. Inglewood, Maine",
-                                    getFontGreyColor(context)),
-                              ],
-                            ),
-                          ),
-                        );
+                              );
+                            },
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                          );
+
+                          //return Text('data');
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+
+                        // By default, show a loading spinner.
+                        return const CircularProgressIndicator();
                       },
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
                     ),
+
+                    // child:  ListView.builder
+                    // (
+                    //   itemCount: salonList.length,
+                    //   itemBuilder: (context, index) {
+                    //     return InkWell(
+                    //       onTap: () {
+                    //         Constant.sendToNext(
+                    //             context, salonDetailScreenRoute);
+                    //       },
+                    //       child: Container(
+                    //         padding: EdgeInsets.all(10.w),
+                    //         margin: EdgeInsets.only(
+                    //             left: (index == 0) ? horSpace : 6.w,
+                    //             right: (index == salonList.length - 1)
+                    //                 ? horSpace
+                    //                 : 6.w,
+                    //             top: 20.w,
+                    //             bottom: 20.w),
+                    //         width: 278.w,
+                    //         decoration: getButtonDecoration(
+                    //             getCardColor(context),
+                    //             withCorners: true,
+                    //             corner: 20.w,
+                    //             shadow: [
+                    //               const BoxShadow(
+                    //                   color: Color.fromRGBO(
+                    //                       0, 0, 0, 0.07999999821186066),
+                    //                   offset: Offset(-4, 5),
+                    //                   blurRadius: 16)
+                    //             ]),
+                    //         height: double.infinity,
+                    //         child: Column(
+                    //           children: [
+                    //             Expanded(
+                    //               flex: 1,
+                    //               child: Stack(
+                    //                 children: [
+                    //                   getCircularImage(
+                    //                       context,
+                    //                       double.infinity,
+                    //                       double.infinity,
+                    //                       20.w,
+                    //                       salonList[index],
+                    //                       boxFit: BoxFit.cover),
+                    //                   Align(
+                    //                     alignment: Alignment.topRight,
+                    //                     child: buildFavouriteBtn(
+                    //                         EdgeInsets.all(10.w)),
+                    //                   )
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //             10.w.verticalSpace,
+                    //             Row(
+                    //               children: [
+                    //                 Expanded(
+                    //                   flex: 1,
+                    //                   child: getCustomFont(
+                    //                       "Royalty  barbershop",
+                    //                       16,
+                    //                       getFontColor(context),
+                    //                       1,
+                    //                       fontWeight: FontWeight.w700),
+                    //                 ),
+                    //                 buildStarView(context, "4.9"),
+                    //               ],
+                    //             ),
+                    //             10.w.verticalSpace,
+                    //             buildLocationRow(
+                    //                 context,
+                    //                 "8502 Preston Rd. Inglewood, Maine",
+                    //                 getFontGreyColor(context)),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    //   scrollDirection: Axis.horizontal,
+                    //   padding: EdgeInsets.zero,
+                    //   shrinkWrap: true,
+                    // ),
                   ),
                   buildSeeAllView(context, "Near by beauty salon", () {
                     selectionController

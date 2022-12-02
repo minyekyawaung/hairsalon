@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:js';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_network/image_network.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -656,28 +659,48 @@ Widget getBackIcon(BuildContext context, Function function,
       ));
 }
 
+Widget Imageshow(String imageUrl, BuildContext context) {
+  return ImageNetwork(
+    image: imageUrl,
+    imageCache: CachedNetworkImageProvider(imageUrl),
+    height: 250,
+    width: 250,
+    duration: 1500,
+    curve: Curves.easeIn,
+    onPointer: true,
+    debugPrint: false,
+    fullScreen: false,
+    fitAndroidIos: BoxFit.cover,
+    fitWeb: BoxFitWeb.cover,
+    onLoading: const CircularProgressIndicator(
+      color: Colors.indigoAccent,
+    ),
+    onError: const Icon(
+      Icons.error,
+      color: Colors.red,
+    ),
+    borderRadius: BorderRadius.circular(70),
+    // onTap: () {
+    //   showDialog(
+    //       context: context,
+    //       builder: (_) => const AlertDialog(
+    //             content: Text("©gabrielpatricksouza"),
+    //           ));
+    //   debugPrint("©gabriel_patrick_souza");
+    // },
+  );
+}
+
 Widget getAssetImage(
     BuildContext context, String image, double width, double height,
     {Color? color, BoxFit boxFit = BoxFit.contain, bool listen = true}) {
-  // return Image.asset(
-  //   Constant.assetImagePath + image,
-  //   color: color,
-  //   width: width,
-  //   height: height,
-  //   fit: boxFit,
-  // );
-
-  return Image.network(
-    'https://pos.crystalshine.net/uploads/img/1668616803_1668615832_salon1.png',
-    // width: 280.0,
+  return Image.asset(
+    Constant.assetImagePath + image,
+    color: color,
+    width: width,
+    height: height,
+    fit: boxFit,
   );
-  // return Image.network(
-  //   image,
-  //   color: color,
-  //   width: width,
-  //   height: height,
-  //   fit: boxFit,
-  // );
 }
 
 Widget getDialogDividerBottom(BuildContext context) {
@@ -1898,6 +1921,22 @@ Widget getCircularImage(BuildContext context, double width, double height,
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       child: getAssetImage(context, img, width, height,
           boxFit: boxFit, listen: listen),
+      // child: Imageshow(img, context),
+    ),
+  );
+}
+
+Widget getCircularImageApi(BuildContext context, double width, double height,
+    double radius, String img,
+    {BoxFit boxFit = BoxFit.contain, bool listen = true}) {
+  return SizedBox(
+    height: height,
+    width: width,
+    child: ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(radius)),
+      // child: getAssetImage(context, img, width, height,
+      //     boxFit: boxFit, listen: listen),
+      child: Imageshow(img, context),
     ),
   );
 }
