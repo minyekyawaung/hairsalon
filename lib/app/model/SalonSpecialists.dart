@@ -21,7 +21,7 @@ class Data {
     required this.userType,
     required this.surname,
     required this.firstName,
-    this.lastName,
+    required this.lastName,
     required this.username,
     required this.email,
     required this.language,
@@ -49,7 +49,7 @@ class Data {
     this.contactNumber,
     this.altNumber,
     this.familyNumber,
-    this.fbLink,
+    required this.fbLink,
     this.twitterLink,
     this.socialMedia_1,
     this.socialMedia_2,
@@ -74,7 +74,7 @@ class Data {
   late final String userType;
   late final String surname;
   late final String firstName;
-  late final String? lastName;
+  late final String lastName;
   late final String username;
   late final String email;
   late final String language;
@@ -102,7 +102,7 @@ class Data {
   late final Null contactNumber;
   late final String? altNumber;
   late final String? familyNumber;
-  late final Null fbLink;
+  late final String fbLink;
   late final Null twitterLink;
   late final Null socialMedia_1;
   late final Null socialMedia_2;
@@ -124,58 +124,58 @@ class Data {
   late final String updatedAt;
 
   Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userType = json['user_type'];
-    surname = json['surname'];
+    // id = json['id'];
+    // userType = json['user_type'];
+    // surname = json['surname'];
     firstName = json['first_name'];
-    lastName = null;
-    username = json['username'];
-    email = json['email'];
-    language = json['language'];
-    contactNo = null;
-    address = null;
-    businessId = json['business_id'];
-    availableAt = null;
-    pausedAt = null;
-    essentialsDepartmentId = null;
-    essentialsDesignationId = null;
-    essentialsSalary = null;
-    essentialsPayPeriod = null;
-    essentialsPayCycle = null;
-    maxSalesDiscountPercent = null;
-    allowLogin = json['allow_login'];
-    status = json['status'];
-    crmContactId = null;
-    isCmmsnAgnt = json['is_cmmsn_agnt'];
-    cmmsnPercent = json['cmmsn_percent'];
-    selectedContacts = json['selected_contacts'];
-    dob = null;
-    gender = null;
-    maritalStatus = null;
-    bloodGroup = null;
-    contactNumber = null;
-    altNumber = null;
-    familyNumber = null;
-    fbLink = null;
-    twitterLink = null;
-    socialMedia_1 = null;
-    socialMedia_2 = null;
-    permanentAddress = null;
-    currentAddress = null;
-    guardianName = null;
-    customField_1 = null;
-    customField_2 = null;
-    customField_3 = null;
-    customField_4 = null;
-    bankDetails = null;
-    idProofName = null;
-    idProofNumber = null;
-    crmDepartment = null;
-    crmDesignation = null;
-    locationId = null;
-    deletedAt = null;
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    // lastName = json['lastName'];
+    // username = json['username'];
+    // email = json['email'];
+    // language = json['language'];
+    // contactNo = json['contactNo'];
+    // address = json['address'];
+    // businessId = json['business_id'];
+    // availableAt = json['availableAt'];
+    // pausedAt = json['pausedAt'];
+    // essentialsDepartmentId = json['essentialsDepartmentId'];
+    // essentialsDesignationId = json['essentialsDesignationId'];
+    // essentialsSalary = json['essentialsSalary'];
+    // essentialsPayPeriod = json['essentialsPayPeriod'];
+    // essentialsPayCycle = json['essentialsPayCycle'];
+    // maxSalesDiscountPercent = json['maxSalesDiscountPercent'];
+    // allowLogin = json['allow_login'];
+    // status = json['status'];
+    // crmContactId = json['crmContactId'];
+    // isCmmsnAgnt = json['is_cmmsn_agnt'];
+    // cmmsnPercent = json['cmmsn_percent'];
+    // selectedContacts = json['selected_contacts'];
+    // dob = json['dob'];
+    // gender = json['gender'];
+    // maritalStatus = json['maritalStatus'];
+    // bloodGroup = json['bloodGroup'];
+    // contactNumber = json['contactNumber'];
+    // altNumber = json['altNumber'];
+    // familyNumber = json['familyNumber'];
+    fbLink = json['fb_link'] != null ? json['fb_link'] : "";
+    // twitterLink = json['twitterLink'];
+    // socialMedia_1 = json['socialMedia_1'];
+    // socialMedia_2 = json['socialMedia_2'];
+    // permanentAddress = json['permanentAddress'];
+    // currentAddress = json['currentAddress'];
+    // guardianName = json['guardianName'];
+    // customField_1 = json['customField_1'];
+    // customField_2 = json['customField_2'];
+    // customField_3 = json['customField_3'];
+    // customField_4 = json['customField_4'];
+    // bankDetails = json['bankDetails'];
+    // idProofName = json['idProofName'];
+    // idProofNumber = json['idProofNumber'];
+    // crmDepartment = json['crmDepartment'];
+    // crmDesignation = json['crmDesignation'];
+    // locationId = json['locationId'];
+    // deletedAt = json['deletedAt'];
+    // createdAt = json['created_at'];
+    // updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,7 @@ import 'package:hairsalon/base/data_file.dart';
 import 'package:hairsalon/base/fetch_pixels.dart';
 import 'package:hairsalon/base/get/route_key.dart';
 import 'package:hairsalon/base/widget_utils.dart';
+import 'package:image_network/image_network.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,6 +20,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui' as ui;
 import '../../base/color_data.dart';
 import '../../base/get/bottom_selection_controller.dart';
+import '../model/BusinessLocation.dart';
 import '../model/model_profile.dart';
 
 class SalonDetailScreen extends StatefulWidget {
@@ -154,9 +157,17 @@ class showImage extends StatelessWidget {
 
 class Reviews extends StatelessWidget {
   final RxDouble rating = 0.0.obs;
+  //late Data _bdata;
+  // Reviews(Data bdata) {
+  //   _bdata = bdata;
+  //   print('constructor');
+  //   print(bdata);
+  // }
 
   @override
   Widget build(BuildContext context) {
+    //Data bdata = Get.arguments;
+    Data bdata = Get.arguments;
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: FetchPixels.getDefaultHorSpaceFigma(context)),
@@ -239,15 +250,16 @@ class Reviews extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: 5,
+            itemCount: 1,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return buildReviewItem(
-                  context,
-                  "Maria Sana",
-                  "“I Was A very First To Pleased With This app using and get great experience",
-                  "15 April 2022",
-                  "profile1.png");
+              return buildReviewItem(context, bdata.customField1,
+                  bdata.customField2, bdata.customField3, bdata.customField4
+                  // "Maria Sana",
+                  // "“I Was A very First To Pleased With This app using and get great experience",
+                  // "15 April 2022",
+                  // "profile1.png"
+                  );
             },
           )
         ],
@@ -295,6 +307,8 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Data bdata = Get.arguments;
+    // print(d.city);
     return Container(
       margin: EdgeInsets.symmetric(
           horizontal: FetchPixels.getDefaultHorSpaceFigma(context)),
@@ -304,37 +318,64 @@ class AboutUs extends StatelessWidget {
         children: [
           buildTitle(context, "About"),
           6.h.verticalSpace,
-          ReadMoreText(
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-            style: buildTextStyle(
-              context,
-              getFontColor(context),
-              FontWeight.w400,
-              16,
-              txtHeight: 1.5,
-            ),
-            trimLines: 4,
-            trimMode: TrimMode.Line,
-            textAlign: TextAlign.start,
-            trimCollapsedText: 'Show more',
-            lessStyle: buildTextStyle(
-                context, getFontColor(context), FontWeight.w500, 16,
-                txtHeight: 1.5),
-            moreStyle: buildTextStyle(
-                context, getFontColor(context), FontWeight.w500, 16,
-                txtHeight: 1.5),
-            trimExpandedText: ' Less',
-          ),
+          // (Get.arguments != null)
+          //     ? Text("Argument " + Get.arguments)
+          //     : Text('No Argument'),
+
+          (Get.arguments != null)
+              ? ReadMoreText(
+                  bdata.city,
+                  style: buildTextStyle(
+                    context,
+                    getFontColor(context),
+                    FontWeight.w400,
+                    16,
+                    txtHeight: 1.5,
+                  ),
+                  trimLines: 4,
+                  trimMode: TrimMode.Line,
+                  textAlign: TextAlign.start,
+                  trimCollapsedText: 'Show more',
+                  lessStyle: buildTextStyle(
+                      context, getFontColor(context), FontWeight.w500, 16,
+                      txtHeight: 1.5),
+                  moreStyle: buildTextStyle(
+                      context, getFontColor(context), FontWeight.w500, 16,
+                      txtHeight: 1.5),
+                  trimExpandedText: ' Less',
+                )
+              : ReadMoreText(
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                  style: buildTextStyle(
+                    context,
+                    getFontColor(context),
+                    FontWeight.w400,
+                    16,
+                    txtHeight: 1.5,
+                  ),
+                  trimLines: 4,
+                  trimMode: TrimMode.Line,
+                  textAlign: TextAlign.start,
+                  trimCollapsedText: 'Show more',
+                  lessStyle: buildTextStyle(
+                      context, getFontColor(context), FontWeight.w500, 16,
+                      txtHeight: 1.5),
+                  moreStyle: buildTextStyle(
+                      context, getFontColor(context), FontWeight.w500, 16,
+                      txtHeight: 1.5),
+                  trimExpandedText: ' Less',
+                ),
           16.h.verticalSpace,
-          buildTitle(context, "ADDRESS"),
+          buildTitle(context, bdata.state),
           6.h.verticalSpace,
-          buildIconRow(context, "451 Beach crescent vancouver,\nBC V6Z 3H1",
-              "location.svg",
-              withImg: true),
+          // buildIconRow(context, "451 Beach crescent vancouver,\nBC V6Z 3H1",
+          //     "location.svg",
+          //     withImg: true),
+          buildIconRow(context, bdata.country, "location.svg", withImg: true),
           14.h.verticalSpace,
           buildTitle(context, "PHONE"),
           6.h.verticalSpace,
-          buildIconRow(context, "(1242)4582-2523", "call.svg"),
+          buildIconRow(context, bdata.mobile, "call.svg"),
           16.h.verticalSpace,
           buildTitle(context, "OPENING HOURS"),
           10.h.verticalSpace,
@@ -392,7 +433,10 @@ class AboutUs extends StatelessWidget {
 }
 
 class _SalonDetailScreen extends State<SalonDetailScreen> {
-  List<ModelProfile> allProfileList = DataFile.getAllProfileList();
+  //List<ModelProfile> allProfileList = DataFile.getAllProfileList();
+  late Data bdata = Get.arguments;
+  final Future<List<ModelProfile>> allProfileList =
+      DataFile.getSalonSpecialists();
 
   List<Widget> tabWidgetList = [AboutUs(), Reviews(), PhotosGallery()];
 
@@ -415,6 +459,31 @@ class _SalonDetailScreen extends State<SalonDetailScreen> {
                           child: SingleChildScrollView(
                             child: Stack(
                               children: [
+                                //Text(bdata!.website!),
+                                ImageNetwork(
+                                  image: bdata.website,
+                                  imageCache:
+                                      CachedNetworkImageProvider(bdata.website),
+                                  height: 250,
+                                  width: 450,
+                                  // width: double.infinity,
+                                  duration: 1500,
+                                  curve: Curves.easeIn,
+                                  onPointer: true,
+                                  debugPrint: false,
+                                  fullScreen: false,
+                                  fitAndroidIos: BoxFit.cover,
+                                  //fitWeb: BoxFitWeb.cover,
+                                  onLoading: const CircularProgressIndicator(
+                                    color: Colors.indigoAccent,
+                                  ),
+                                  onError: const Icon(
+                                    Icons.error,
+                                    color: Colors.red,
+                                  ),
+                                  borderRadius: BorderRadius.circular(70),
+                                ),
+
                                 Container(
                                   width: double.infinity,
                                   padding: EdgeInsets.only(
@@ -422,11 +491,25 @@ class _SalonDetailScreen extends State<SalonDetailScreen> {
                                       right: horSpace,
                                       top: 60.h),
                                   height: 245.h,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "${Constant.assetImagePath}salon_detail_img.png"),
-                                          fit: BoxFit.cover)),
+
+                                  // decoration: BoxDecoration(
+                                  //     image: DecorationImage(
+                                  //         image: AssetImage(
+                                  //             "${Constant.assetImagePath}salon_detail_img.png"),
+                                  //         fit: BoxFit.cover
+                                  //         // image :  Imageshow(img, context);
+                                  //         )),
+
+                                  // decoration: BoxDecoration
+                                  // (
+                                  //     image: DecorationImage
+                                  //     (
+                                  //         image: AssetImage(
+                                  //             "${Constant.assetImagePath}salon_detail_img.png"),
+                                  //         fit: BoxFit.cover
+                                  //        // image :  Imageshow(img, context);
+                                  //     )
+                                  // ),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Row(
@@ -461,7 +544,8 @@ class _SalonDetailScreen extends State<SalonDetailScreen> {
                                           Expanded(
                                             flex: 1,
                                             child: getCustomFont(
-                                                "Royalty barbershop",
+                                                //"Royalty barbershop 1",
+                                                bdata.name.toString(),
                                                 22,
                                                 getFontColor(context),
                                                 1,
@@ -534,7 +618,7 @@ class _SalonDetailScreen extends State<SalonDetailScreen> {
                                               context, "export.svg", "Share",
                                               () {
                                             Share.share(
-                                                "http://www.royaltybarbershop.com");
+                                                "https://pos.crystalshine.net/");
                                           }),
                                         ],
                                       ).marginSymmetric(horizontal: horSpace),
@@ -549,19 +633,88 @@ class _SalonDetailScreen extends State<SalonDetailScreen> {
                                       Container(
                                         width: double.infinity,
                                         height: 92.h,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: allProfileList.length,
-                                          padding: EdgeInsets.zero,
-                                          itemBuilder: (context, index) {
-                                            return buildProfileItem(
-                                                context, index, () {
-                                              Constant.sendToNext(context,
-                                                  specialistDetailScreenRoute);
-                                            },
-                                                allProfileList[index],
-                                                index ==
-                                                    allProfileList.length - 1);
+                                        child:
+                                            FutureBuilder<List<ModelProfile>>(
+                                          future: allProfileList,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              return ListView.builder(
+                                                itemBuilder: (context, index) {
+                                                  return Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: (index == 0)
+                                                            ? horSpace
+                                                            : (horSpace / 2),
+                                                        right: (index ==
+                                                                snapshot.data!
+                                                                        .length -
+                                                                    1)
+                                                            ? horSpace
+                                                            : (horSpace / 2)),
+                                                    width: 74.w,
+                                                    height: double.infinity,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Constant.sendToNext(
+                                                            context,
+                                                            salonScreenRoute);
+                                                      },
+                                                      child: Column(
+                                                        children: [
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child:
+                                                                getCircularImageApi(
+                                                                    context,
+                                                                    //double.infinity,
+                                                                    //double.infinity,
+                                                                    100,
+                                                                    40,
+                                                                    10.w,
+                                                                    snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .image,
+                                                                    boxFit: BoxFit
+                                                                        .cover),
+                                                          ),
+                                                          6.w.verticalSpace,
+                                                          getCustomFont(
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .name,
+                                                              16,
+                                                              getFontColor(
+                                                                  context),
+                                                              1,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              txtHeight: 1.5),
+                                                          2.w.verticalSpace,
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    snapshot.data!.length,
+                                                padding: EdgeInsets.zero,
+                                                shrinkWrap: true,
+                                              );
+
+                                              //return Text('data');
+                                            } else if (snapshot.hasError) {
+                                              return Text('${snapshot.error}');
+                                            }
+
+                                            // By default, show a loading spinner.
+                                            return const CircularProgressIndicator();
                                           },
                                         ),
                                       ),

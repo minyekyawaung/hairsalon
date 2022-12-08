@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hairsalon/app/model/BusinessLocation.dart';
 import 'package:hairsalon/base/size_config.dart';
 import 'dart:ui' as ui;
+
+import '../app/model/BusinessLocation.dart';
 
 class Constant {
   static String assetImagePath = "assets/images/";
@@ -63,6 +66,15 @@ class Constant {
   static sendToNext(BuildContext context, String route, {Object? arguments}) {
     if (arguments != null) {
       Get.toNamed(route, arguments: arguments);
+    } else {
+      Get.toNamed(route);
+    }
+  }
+
+  static sendToNextUpdate(BuildContext context, String route, Data bdata,
+      {Data? arguments}) {
+    if (bdata != null) {
+      Get.toNamed(route, arguments: bdata);
     } else {
       Get.toNamed(route);
     }

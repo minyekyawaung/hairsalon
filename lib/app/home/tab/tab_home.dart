@@ -17,11 +17,8 @@ import '../../model/model_banner.dart';
 import '../../model/model_category.dart';
 
 class TabHome extends StatelessWidget {
-  //final List<ModelCategory> categoryList = DataFile.getAllCategoryList();
   final Future<List<BusinessLocation.Data>> categoryList =
       DataFile.getBusinessLocation();
-  // final List<String> salonList = ["salon3.png", "salon4.png"];
-  //late Future<List<Taxonomy.Data>> salonList = DataFile.callTaxonomy();
   late Future<List<BusinessLocation.Data>> salonList =
       DataFile.getBusinessLocation();
   final List<String> nearestSalonList = ["salon3.png", "salon4.png"];
@@ -216,7 +213,6 @@ class TabHome extends StatelessWidget {
                       future: categoryList,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          //return Text('data');
                           return ListView.builder(
                             itemBuilder: (context, index) {
                               return Container(
@@ -292,8 +288,46 @@ class TabHome extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
-                                  Constant.sendToNext(
-                                      context, salonDetailScreenRoute);
+                                  BusinessLocation.Data? bdata =
+                                      new BusinessLocation.Data(
+                                    id: snapshot.data![index].id,
+                                    businessId:
+                                        snapshot.data![index].businessId,
+                                    locationId:
+                                        snapshot.data![index].locationId,
+                                    name: snapshot.data![index].name,
+                                    landmark: snapshot.data![index].landmark,
+                                    country: snapshot.data![index].country,
+                                    state: snapshot.data![index].state,
+                                    city: snapshot.data![index].city,
+                                    zipCode: snapshot.data![index].zipCode,
+                                    invoiceSchemeId:
+                                        snapshot.data![index].invoiceSchemeId,
+                                    invoiceLayoutId:
+                                        snapshot.data![index].invoiceLayoutId,
+                                    saleInvoiceLayoutId: snapshot
+                                        .data![index].saleInvoiceLayoutId,
+                                    printReceiptOnInvoice: snapshot
+                                        .data![index].printReceiptOnInvoice,
+                                    receiptPrinterType: snapshot
+                                        .data![index].receiptPrinterType,
+                                    mobile: snapshot.data![index].mobile,
+                                    website: snapshot.data![index].website,
+                                    isActive: snapshot.data![index].isActive,
+                                    createdAt: snapshot.data![index].createdAt,
+                                    updatedAt: snapshot.data![index].updatedAt,
+                                    customField1:
+                                        snapshot.data![index].customField1,
+                                    customField2:
+                                        snapshot.data![index].customField2,
+                                    customField3:
+                                        snapshot.data![index].customField3,
+                                    customField4:
+                                        snapshot.data![index].customField4,
+                                  );
+
+                                  Constant.sendToNextUpdate(
+                                      context, salonDetailScreenRoute, bdata);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(10.w),
@@ -346,7 +380,6 @@ class TabHome extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: getCustomFont(
-                                                // "Royalty  barbershop",
                                                 snapshot.data![index].name
                                                     .toString(),
                                                 16,
@@ -360,7 +393,6 @@ class TabHome extends StatelessWidget {
                                       10.w.verticalSpace,
                                       buildLocationRow(
                                           context,
-                                          //"8502 Preston Rd. Inglewood, Maine",
                                           snapshot.data![index].landmark +
                                               " , " +
                                               snapshot.data![index].city,
@@ -374,8 +406,6 @@ class TabHome extends StatelessWidget {
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                           );
-
-                          //return Text('data');
                         } else if (snapshot.hasError) {
                           return Text('${snapshot.error}');
                         }

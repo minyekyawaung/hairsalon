@@ -525,6 +525,20 @@ Widget getCircleImage(BuildContext context, String imgName, double size,
   );
 }
 
+Widget getCircleImageNetwork(BuildContext context, String imgName, double size,
+    {bool fileImage = false}) {
+  return SizedBox(
+    width: size,
+    height: size,
+    child: ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(size / 2)),
+      child: (fileImage)
+          ? Image.file(File(imgName))
+          : getAssetImage(context, imgName, double.infinity, double.infinity),
+    ),
+  );
+}
+
 Widget getSvgImage(BuildContext context, String image, double size,
     {Color? color, BoxFit boxFit = BoxFit.fill}) {
   return SvgPicture.asset(
@@ -680,14 +694,6 @@ Widget Imageshow(String imageUrl, BuildContext context) {
       color: Colors.red,
     ),
     borderRadius: BorderRadius.circular(70),
-    // onTap: () {
-    //   showDialog(
-    //       context: context,
-    //       builder: (_) => const AlertDialog(
-    //             content: Text("©gabrielpatricksouza"),
-    //           ));
-    //   debugPrint("©gabriel_patrick_souza");
-    // },
   );
 }
 
@@ -881,6 +887,102 @@ Widget buildItemCategoryDetail(
         children: [
           getCircularImage(
               context, 70.h, double.infinity, 20.h, category.image),
+          12.w.horizontalSpace,
+          Expanded(
+            flex: 1,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getCustomFont(category.title, 20, getFontColor(context), 1,
+                      fontWeight: FontWeight.w700, txtHeight: 1.5),
+                  6.h.verticalSpace,
+                  getCustomFont(
+                      "Over 10 Salon", 14, getFontGreyColor(context), 1,
+                      fontWeight: FontWeight.w700, txtHeight: 1.5)
+                ]),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+Widget buildItemCategoryDetailNetwork(
+    BuildContext context, ModelCategory category, Function function) {
+  return InkWell(
+    onTap: () {
+      function();
+    },
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+      width: double.infinity,
+      height: 90.h,
+      decoration: getButtonDecoration(getCardColor(context),
+          withCorners: true,
+          corner: 20.h,
+          shadow: [
+            const BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.07999999821186066),
+                offset: Offset(-4, 5),
+                blurRadius: 16)
+          ]),
+      margin: EdgeInsets.symmetric(
+          horizontal: FetchPixels.getDefaultHorSpaceFigma(context),
+          vertical: 10.h),
+      child: Row(
+        children: [
+          getCircularImageApi(context, 100, 50, 10.h, category.image),
+          12.w.horizontalSpace,
+          Expanded(
+            flex: 1,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getCustomFont(category.title, 20, getFontColor(context), 1,
+                      fontWeight: FontWeight.w700, txtHeight: 1.5),
+                  6.h.verticalSpace,
+                  getCustomFont(
+                      "Over 10 Salon", 14, getFontGreyColor(context), 1,
+                      fontWeight: FontWeight.w700, txtHeight: 1.5)
+                ]),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+Widget buildItemCategoryDetailNetwork1(
+    BuildContext context, ModelCategory category) {
+  return InkWell(
+    // onTap: () {
+    //   function();
+    // },
+    // child: Text(category.title),
+    child: Container(
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+      width: double.infinity,
+      height: 90.h,
+      decoration: getButtonDecoration(getCardColor(context),
+          withCorners: true,
+          corner: 20.h,
+          shadow: [
+            const BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.07999999821186066),
+                offset: Offset(-4, 5),
+                blurRadius: 16)
+          ]),
+      margin: EdgeInsets.symmetric(
+          horizontal: FetchPixels.getDefaultHorSpaceFigma(context),
+          vertical: 10.h),
+      child: Row(
+        children: [
+          // getCircularImageApi(context, 100, 10, 10.h, category.image),
+          // getCircularImage
+          // (
+          //     context, 70.h, double.infinity, 20.h, category.image),
           12.w.horizontalSpace,
           Expanded(
             flex: 1,
@@ -1921,7 +2023,6 @@ Widget getCircularImage(BuildContext context, double width, double height,
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       child: getAssetImage(context, img, width, height,
           boxFit: boxFit, listen: listen),
-      // child: Imageshow(img, context),
     ),
   );
 }
@@ -1934,8 +2035,6 @@ Widget getCircularImageApi(BuildContext context, double width, double height,
     width: width,
     child: ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(radius)),
-      // child: getAssetImage(context, img, width, height,
-      //     boxFit: boxFit, listen: listen),
       child: Imageshow(img, context),
     ),
   );
@@ -1993,7 +2092,8 @@ Widget buildReviewItem(BuildContext context, String title, String review,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCircleImage(context, img, 30.h),
+        //getCircleImage(context, img, 30.h),
+        getCircularImageApi(context, 100, 40, 10.w, img),
         8.w.horizontalSpace,
         Expanded(
           flex: 1,

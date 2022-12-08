@@ -79,7 +79,9 @@ class DataFile {
     }
   }
 
-  static Future<List<SalonSpecialists.Data>> getSalonSpecialists() async {
+  static Future<List<ModelProfile>> getSalonSpecialists() async {
+    print('getSalonSpecialists');
+
     try {
       String uri = 'https://pos.crystalshine.net/connector/api/user';
       String token =
@@ -95,12 +97,32 @@ class DataFile {
         headers: headers,
       );
 
+      print(response.statusCode);
+
       var tagObjsJson = jsonDecode(response.body)['data'] as List;
+
+      // print(tagObjsJson);
+
       List<SalonSpecialists.Data> tagObjs = tagObjsJson
           .map((tagJson) => SalonSpecialists.Data.fromJson(tagJson))
           .toList();
 
-      return tagObjs;
+      print("result start");
+      print(tagObjs);
+      print("result end");
+
+      List<ModelProfile> modelProfile = [];
+
+      for (var element in tagObjs) {
+        ModelProfile profile =
+            new ModelProfile(element.firstName, element.fbLink);
+        print(element.firstName);
+        print(element.fbLink);
+        modelProfile.add(profile);
+      }
+
+      //return tagObjs;
+      return modelProfile;
     } catch (e) {
       print(e);
       return [];
@@ -130,6 +152,46 @@ class DataFile {
           .toList();
 
       return tagObjs;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  static Future<List<ModelCategory>> getBusinessLocationSeeAll() async {
+    print("getBusinessLocationSeeAll");
+    try {
+      String uri =
+          'https://pos.crystalshine.net/connector/api/business-location';
+      String token =
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImRmYTVmNTQ3YjBmZjQ5ODU0MmRiNTk2YTI5MzdmYzFmZWQ1MzRjMzI5OGYxNjcxYmVjNGQ0OTA2Y2I1MmMxNTEyMjM4YjkxYTY4NzllZDFhIn0.eyJhdWQiOiI1IiwianRpIjoiZGZhNWY1NDdiMGZmNDk4NTQyZGI1OTZhMjkzN2ZjMWZlZDUzNGMzMjk4ZjE2NzFiZWM0ZDQ5MDZjYjUyYzE1MTIyMzhiOTFhNjg3OWVkMWEiLCJpYXQiOjE2Njk4NzQ0OTgsIm5iZiI6MTY2OTg3NDQ5OCwiZXhwIjoxNzAxNDEwNDk4LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.ST4qUSKtZ5qKxdt_s1nPMN7JqLv82ALhotyW7xDgQRJ_uDD7Mbd1df7aEkSY6Jhplq7XyF_CiRmOGQuunWKaaQgXy6qb4APwsgQyYOw81nYtx6Ss42K8jYPNxZ-WsX2CDC80wp_e17R-_9gCz3poi8DPZ8pTj0M2AzUoBFysgNrqEFjPSOZyuJyYTPs_pQWPBOuSPQLu7TtVTARfNrQNXxLIp37L93bel_sW8OrPsaaZYKNbhgTevGUjTIPq_no0KhqKVILuE4wlD1hlJsfgcDfq1zY9xNDlN4A__sK1tSFcvbUw1hRP_TEJQjJ0xmRrUFwnRTtNnJCH7fcwiVSu_ncMh6HDCn0prqyVu210Z5AUkWiGk1D-SCmnNnrBAIKNLk5SESOEtV_dm0bimuz0PBlUY2zmMTE3a5U3tjttnKLrBycb0sUXxUrzbjJmnsMPlZ8gLZowBfOW8kQFxv-V_YXmR7tSY18hQrCAO_COpYu8P-LAUf6c85kNwhDWMseAhdfs4DtnTVLxUW9qayOLUlNBBcXaoPHQCabIYvSf_1cwDSj4nRKTjBKOxhPQ_p6Al-vkxFpwopqzKM8G3mHYGt6I-QPo8lj-Ay3AMU-lrUWv4DM04NzSHgSnm56tRZfbVSG6tr2o8oozWKsUfWCeHTOvKsUecRoX7Dp2UshYyrI';
+
+      var headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      };
+      http.Response response = await http.get(
+        Uri.parse(uri),
+        headers: headers,
+      );
+
+      var tagObjsJson = jsonDecode(response.body)['data'] as List;
+      List<BusinessLocation.Data> tagObjs = tagObjsJson
+          .map((tagJson) => BusinessLocation.Data.fromJson(tagJson))
+          .toList();
+      List<ModelCategory> modellist = [];
+      for (var element in tagObjs) {
+        // ModelCategory modelCategory =
+        //     new ModelCategory(element.name, "cat1.png");
+        ModelCategory modelCategory =
+            new ModelCategory(element.name, element.website);
+        modellist.add(modelCategory);
+      }
+
+      print(modellist.length);
+      return modellist;
+      //return tagObjs;
     } catch (e) {
       print(e);
       return [];
